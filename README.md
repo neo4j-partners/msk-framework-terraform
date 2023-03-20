@@ -41,18 +41,20 @@ output "ssh_commands" {
 }
 ~~~
 
-## Cloud Topology
+## AWS Resources
 Assuming that defaults were used, the following resources are created by the terraform module:
 
 Users are reminded that the deployment of cloud resources will incur costs.
 
  - 1 VPC, with a CIDR Range of 10.0.0.0/16
- - 3 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
-   - 10.0.1.0/24
-   - 10.0.2.0/24
-   - 10.0.3.0/24
- - 1, or between 3 and 10 EC2 instances (Depending on whether a single instance, or an autonomous cluster is selected)
- - 1 Network (Layer 4) Load Balancer
+ - 4 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
+   - 10.0.1.0/24 [Private]
+   - 10.0.2.0/24 [Private]
+   - 10.0.3.0/24 [Private]
+   - 10.0.10.0/24 [Public]
+ - An Internet Gateway
+ - A NAT Gateway
+ - Routes, Route Tables & Associations
 
 ## Prerequisites
 
