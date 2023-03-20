@@ -1,10 +1,19 @@
-# neo4j-aws-terraform
+# msk-framework-terraform
 
-This repository hosts a terraform module for the installation of an environment in AWS EC2, running neo4j.  
+This repository hosts a terraform module for the creation of a base network environment in AWS, on which MSK (Kafka) can be installed.
 
 ## Usage
 The terraform code hosted in this repository can be easily used by creating a parent module on your local machine, in a main.tf file as shown below.
 (More information about terraform modules can be found on [this](https://developer.hashicorp.com/terraform/language/modules) page)
+
+
+
+
+
+
+
+
+
 
 Note the `source` parameter can be used to *either* point directly to this repository or a local copy of the terraform module.
 
