@@ -34,31 +34,11 @@ variable "ssh_source_cidr" {
   }
 }
 
-variable "neo4j_source_cidr" {
-  description = "The cidr range which is allowed to connect to the neo4j environment. Default will be fully open: 0.0.0.0/0"
-  type        = string
-  default     = "0.0.0.0/0"
-  validation {
-    condition     = can(regex("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/([0-9]|[1-2][0-9]|3[0-2]))$", var.neo4j_source_cidr))
-    error_message = "Invalid IP address provided for the vpc_neo4j_source_cidr block variable.  A valid example would be 0.0.0.0/16"
-  }
-}
+
 
 variable "env_prefix" {
   description = "A prefix which is useful for tagging and naming"
   type        = string
-}
-
-variable "neo4j_version" {
-  description = "The version of neo4j to be installed"
-  type        = string
-
-  validation {
-    condition     = contains(["5"], var.neo4j_version)
-    error_message = "The only currently supported value is 5 (for Neo4j version 5).  Development is ongoing for Neo4j v4.4 (LTS)"
-  }
-
-  default = 5
 }
 
 variable "target_region" {
@@ -73,7 +53,7 @@ variable "availability_zones" {
   default     = ["a", "b", "c"]
 }
 
-variable "subnet_qty" {
+variable "private_subnet_qty" {
   description = "The number of subnets in the environment - should remain at 3"
   type        = number
   default     = 3
