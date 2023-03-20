@@ -8,12 +8,11 @@ The terraform code hosted in this repository can be easily used by creating a pa
 
 Note the `source` parameter can be used to *either* point directly to this repository or a local copy of the terraform module.
 
-
 ~~~
 #main.tf file for deploying msk-framework-terraform
-module "neo4j-environment" {
-  source         = "github.com/neo4j/neo4j-aws-terraform"
-  //source       = "../neo4j-terraform"
+module "msk-framework-environment" {
+  source         = "github.com/edrandall-dev/msk-framework-terraform"
+  //source       = "../msk-framework-terraform"
 
   //Required values (no defaults are provided)
   public_key_value = "ssh-rsa AAAAB3NzaC1A.....b+oTz7tb0WF2aiOPp0="
