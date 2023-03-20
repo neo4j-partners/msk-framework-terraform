@@ -10,7 +10,7 @@ resource "aws_vpc" "msk_vpc" {
 }
 
 resource "aws_subnet" "msk_private_subnet" {
-  count = var.private_subnet_qty
+  count                   = var.private_subnet_qty
   vpc_id                  = aws_vpc.msk_vpc.id
   cidr_block              = cidrsubnet(var.vpc_base_cidr, 8, count.index + 1)
   availability_zone       = join("", ["${var.target_region}", "${var.availability_zones[count.index]}"])
@@ -56,7 +56,12 @@ resource "aws_nat_gateway" "msk_ngw" {
 }
 
 resource "aws_eip" "msk_eip" {
-  vpc      = true
+  vpc = true
+
+  tags = {
+    "Name"      = "${var.env_prefix}-eip"
+    "Terraform" = true
+  }
 }
 
 
@@ -80,22 +85,26 @@ resource "aws_route" "msk_public_subnet_route" {
   route_table_id         = aws_route_table.msk_public_subnet_rt.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.msk_igw.id
+
 }
 
 resource "aws_route" "msk_private_subnet_route" {
   route_table_id         = aws_route_table.msk_private_subnet_rt.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_nat_gateway.msk_ngw.id
+
 }
 
 resource "aws_route_table_association" "msk_private_route_assoc" {
   count          = var.private_subnet_qty
   subnet_id      = aws_subnet.msk_private_subnet[count.index].id
   route_table_id = aws_route_table.msk_private_subnet_rt.id
+
 }
 
 resource "aws_route_table_association" "msk_public_route_assoc" {
   count          = 1
   subnet_id      = aws_subnet.msk_public_subnet.id
   route_table_id = aws_route_table.msk_public_subnet_rt.id
+
 }
