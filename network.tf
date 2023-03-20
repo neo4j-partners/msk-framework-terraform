@@ -95,7 +95,7 @@ resource "aws_route_table_association" "msk_private_route_assoc" {
 }
 
 resource "aws_route_table_association" "msk_public_route_assoc" {
-  count          = var.public_subnet_qty
+  count          = 1
   subnet_id      = aws_subnet.msk_public_subnet.id
   route_table_id = aws_route_table.msk_public_subnet_rt.id
 }
