@@ -34,8 +34,6 @@ variable "ssh_source_cidr" {
   }
 }
 
-
-
 variable "env_prefix" {
   description = "A prefix which is useful for tagging and naming"
   type        = string
@@ -59,25 +57,10 @@ variable "private_subnet_qty" {
   default     = 3
 }
 
-variable "node_count" {
-  description = "The number of neo4j instances to be deployed"
-  default     = 3
-  type        = number
-
-  validation {
-    condition = (
-      var.node_count > 0 &&
-      var.node_count != 2 &&
-      var.node_count < 11
-    )
-    error_message = "node_count can be 1 or between 3 and 10"
-  }
-}
-
-variable "instance_type" {
-  description = "The type of EC2 instances to be deployed"
+variable "bastion_instance_type" {
+  description = "The type of bastion EC2 instance to be deployed"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.micro"
 }
 
 variable "public_key_value" {
@@ -86,75 +69,4 @@ variable "public_key_value" {
 
 variable "private_key_path" {
   description = "The location of the private SSH key, generated on the the local environment"
-}
-
-variable "install_gds" {
-  description = "Determine if GDS is required"
-  type        = bool
-  default     = false
-}
-
-variable "install_bloom" {
-  description = "Determine if Bloom is required"
-  type        = bool
-  default     = false
-}
-
-variable "install_apoc" {
-  description = "Determine if the APOC library is required"
-  type        = bool
-  default     = true
-}
-
-variable "gds_key" {
-  description = "License Key for Graph Data Science"
-  type        = string
-  default     = "None"
-}
-
-variable "bloom_key" {
-  description = "License Key for Bloom"
-  type        = string
-  default     = "None"
-}
-
-variable "neo4j_password" {
-  description = "Password for the neo4j user"
-}
-
-variable "neo4j-ami-list" {
-  description = "A map containing the neo4j AMIs"
-  //type        = map(string)
-  default = {
-    "4.4" = {
-      "us-east-1" = "ami-0ebd717756e832d9f"
-    },
-
-    "5" = {
-      "us-east-1"      = "ami-0e400af847eb9a531",
-      "us-east-2"      = "ami-0107e71b1207b90c1",
-      "us-west-1"      = "ami-01a47d8951b35c272",
-      "us-west-2"      = "ami-074caf8265c21fd4d",
-      "ca-central-1"   = "ami-07887e0c7c8cd3151",
-      "eu-central-1"   = "ami-01321a57a6c5786c4",
-      "eu-west-1"      = "ami-0f91decef80d7d93b",
-      "eu-west-2"      = "ami-0a7d3edbd43b7eb80",
-      "eu-west-3"      = "ami-084419b01954a6223",
-      "eu-north-1"     = "ami-05fed050da0ade42e",
-      "eu-south-1"     = "ami-02c3742c42b59e7ef",
-      "ap-southeast-1" = "ami-09a4e375812f71b6a",
-      "ap-southeast-2" = "ami-0a95c0a2258c32e85",
-      "ap-southeast-3" = "ami-09093311aa2cb29a8",
-      "ap-south-1"     = "ami-0fceddde2778cc2e0",
-      "ap-northeast-1" = "ami-0dbecd5269ffad97f",
-      "ap-northeast-2" = "ami-0e78f50ef5b1e902b",
-      "ap-northeast-3" = "ami-0ff14d64aef37f40d",
-      "ap-east-1"      = "ami-05f54d0dc0905041d",
-      "sa-east-1"      = "ami-0a431786eba166f75",
-      "me-south-1"     = "ami-0c77db260e85bb422",
-      "af-south-1"     = "ami-041936db2e9c3abc2",
-      "us-gov-east-1"  = "ami-02ed55fa8cb841061",
-      "us-gov-west-1"  = "ami-05f0b2155478f825"
-    }
-  }
 }
