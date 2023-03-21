@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "msk_connect_policy_doc" {
 }
 
 resource "aws_iam_policy" "msk_connect_policy" {
-  name        = "msk_connect_policy"
+  name        = "${var.env_prefix}_msk_connect_policy"
   description = "MSK Policy"
   policy      = data.aws_iam_policy_document.msk_connect_policy_doc.json
 
