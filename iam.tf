@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "msk_connect_policy_doc" {
       "kafka-cluster:ReadData"
     ]
 
-    resources = [ "arn:aws:kafka:${var.target_region}:${data.aws_caller_identity.msk_current.account_id}:cluster/*/*" ]
+    resources = [ "arn:aws:kafka:${var.target_region}:${data.aws_caller_identity.msk_current.account_id}:topic/*/*/*" ]
   }
 
   statement {
@@ -51,7 +51,7 @@ resource "aws_iam_role" "msk_role" {
   assume_role_policy = local.assume_role_policy
 
   tags = {
-    "Name"      = "${var.env_prefix}-role"
+    "Name"      = "${var.env_prefix}-msk-role"
     "Terraform" = true
   }
 }

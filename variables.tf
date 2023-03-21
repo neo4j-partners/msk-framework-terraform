@@ -9,6 +9,14 @@ locals {
         Principal = {
           Service = "ec2.amazonaws.com"
         }
+       },
+       {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "kafkaconnect.amazonaws.com"
+        }
       }
     ]
   })
