@@ -37,7 +37,7 @@ module "msk-framework-environment" {
 }
 
 output "ssh_commands" {
-  value = module.neo4j-environment.ssh_commands
+  value = module.msk-framework-environment.ssh_commands
 }
 ~~~
 
