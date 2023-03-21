@@ -9,8 +9,6 @@ resource "aws_instance" "msk_bastion_instance" {
     "${aws_security_group.msk_private_sg.id}"
     ]
   
-  //iam_instance_profile = aws_iam_instance_profile.neo4j_ssr_ssm_instance_profile.name
-  
   tags = {
     "Name"      = "${var.env_prefix}-bastion"
     "Terraform" = true
@@ -27,7 +25,7 @@ resource "aws_instance" "msk_client_instance" {
     "${aws_security_group.msk_private_sg.id}"
     ]
 
-  //iam_instance_profile = aws_iam_instance_profile.neo4j_ssr_ssm_instance_profile.name
+  iam_instance_profile = aws_iam_instance_profile.msk_instance_profile.name
   
   
   user_data = templatefile(
