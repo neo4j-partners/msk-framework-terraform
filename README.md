@@ -29,7 +29,7 @@ module "msk-framework-environment" {
   //Default is "0.0.0.0/0"
   ssh_source_cidr   = "0.0.0.0/0"
 
-  //Default is "neo4j-tf-cloud"
+  //Default is "msk-tf-cloud"
   env_prefix = "my-neo4j-env"
 
   //Default is "us-east-1"
