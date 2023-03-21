@@ -6,6 +6,8 @@ This repository hosts a terraform module for the creation of a base network envi
 The terraform code hosted in this repository can be easily used by creating a parent module on your local machine, in a main.tf file as shown below.
 (More information about terraform modules can be found on [this](https://developer.hashicorp.com/terraform/language/modules) page)
 
+The command [`ssh-keygen`](https://linux.die.net/man/1/ssh-keygen) can be used to generate a keypair.  The private key should not be shared, and its file location should be the value for `private_key_path`.  The contents of the public key should be given as the value for `public_key_path`
+
 Note the `source` parameter can be used to *either* point directly to this repository or a local copy of the terraform module.
 
 ~~~
@@ -30,7 +32,7 @@ module "msk-framework-environment" {
   ssh_source_cidr   = "0.0.0.0/0"
 
   //Default is "msk-tf-cloud"
-  env_prefix = "my-neo4j-env"
+  env_prefix = "msk-tf-cloud"
 
   //Default is "us-east-1"
   target_region = "us-east-1"
