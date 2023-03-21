@@ -17,6 +17,25 @@ resource "aws_instance" "msk_bastion_instance" {
   }
 }
 
+resource "aws_instance" "msk_client_instance" {
+  ami                    = data.aws_ami.latest_amazon.id
+
+  instance_type          = "t3.micro"
+  key_name               = aws_key_pair.msk_ec2_key.id
+  subnet_id              = aws_subnet.msk_private_subnet[0].id
+  vpc_security_group_ids = [
+    "${aws_security_group.msk_private_sg.id}"
+    ]
+
+  //iam_instance_profile = aws_iam_instance_profile.neo4j_ssr_ssm_instance_profile.name
+  
+  tags = {
+    "Name"      = "${var.env_prefix}-msk-client"
+    "Terraform" = true
+  }
+}
+
+
 data "aws_ami" "latest_amazon" {
   most_recent = true
 

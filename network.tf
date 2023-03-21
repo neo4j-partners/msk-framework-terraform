@@ -14,7 +14,7 @@ resource "aws_subnet" "msk_private_subnet" {
   vpc_id                  = aws_vpc.msk_vpc.id
   cidr_block              = cidrsubnet(var.vpc_base_cidr, 8, count.index + 1)
   availability_zone       = join("", ["${var.target_region}", "${var.availability_zones[count.index]}"])
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = {
     "Name"      = "${var.env_prefix}-private-subnet-${var.availability_zones[count.index]}"
