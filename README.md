@@ -38,8 +38,8 @@ module "msk-framework-environment" {
   target_region = "us-east-1"
 }
 
-output "ssh_commands" {
-  value = module.msk-framework-environment.ssh_commands
+output "bastion_ssh_command" {
+  value = module.msk-framework-environment.bastion_ssh_command
 }
 ~~~
 
