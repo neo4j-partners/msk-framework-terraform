@@ -39,8 +39,10 @@ ssh-keygen -N "" -f my-new-ssh-key
 > The private key should never be shared, and its file location should be the value for `private_key_path` in the main.tf file example shown below.  The *contents* of the public key should be given as the value for `public_key_path`
 
 #### Ensure the correct permissions on the new keypair
+```
 chmod 400 my-new-ssh-key
 chmod 644 my-new-ssh-key.pub
+```
 
 #### Ensure ssh-agent is running
 ```
@@ -98,6 +100,31 @@ output "bastion_ssh_command" {
 }
 ~~~
 
+## Verify Terraform Code
+Once the main.tf file has been properly created, the terrform configuration can be validated:
+```
+terraform validate
+```
+
+## Deploy Resources (plan & deploy)
+```
+terraform plan
+```
+
+```
+terraform apply -auto-approve
+```
+
+## Connecting to the bastion
+Once the ```terraform apply``` has completed. The bastion can be connected to, using the command which is shown as part of the terraform output.  For example:
+
+```
+ssh -A -o StrictHostKeyChecking=no ec2-user@13.40.122.45
+```
+
+Once connected to the bastion instance, a further connection can be made (from the bastion instance) onto the msk-test instance which resides in the first private subnet (and only has a private IP address)
+
+
 ## AWS Resources
 Assuming that defaults were used, the following resources are created by the terraform module:
 
@@ -105,10 +132,10 @@ Users are reminded that the deployment of cloud resources will incur costs.
 
  - 1 VPC, with a CIDR Range of 10.0.0.0/16
  - 4 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
-   - 10.0.1.0/24 [Private]
-   - 10.0.2.0/24 [Private]
-   - 10.0.3.0/24 [Private]
-   - 10.0.10.0/24 [Public]
+   - ```10.0.1.0/24  [Private]```
+   - ```10.0.2.0/24  [Private]```
+   - ```10.0.3.0/24  [Private]```
+   - ```10.0.10.0/24 [Public]```
  - An Internet Gateway
  - A NAT Gateway
  - Routes, Route Tables & Associations
