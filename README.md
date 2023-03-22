@@ -129,7 +129,7 @@ ssh -A -o StrictHostKeyChecking=no ec2-user@12.34.56.78
 Once connected to the bastion instance, a further connection can be made (from the bastion instance) onto the msk-test instance which resides in the first private subnet (and only has a private IP address). This can be done with the second command which is shown as part of the terraform output.  For example:
 
 ```
-ssh -A -o StrictHostKeyChecking=no ec2-user@10.12.13.14
+ssh -A -o StrictHostKeyChecking=no ec2-user@10.0.11.22
 ```
 
 ## AWS Resources
@@ -147,3 +147,4 @@ Users are reminded that the deployment of cloud resources will incur costs.
  - A NAT Gateway
  - Routes, Route Tables & Associations
 
+> If you tear down the environment and start again, you may need to delete and re-add your ssh-key into the ssh-agent.  The command ```ssh-add -D``` can be used to delete all entries from ssh-agent.

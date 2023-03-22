@@ -11,7 +11,7 @@ mkdir $KAFKA_DIR
 cd $KAFKA_DIR
 wget https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
 tar xzf $KAFKA.tgz
-cd $KAFKA/lib
+cd $KAFKA/libs
 wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
 
 MSK_CONFIG="kafka_2.12-2.8.1/config/client.properties"
