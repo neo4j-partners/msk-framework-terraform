@@ -3,11 +3,12 @@
 sleep 10
 
 KAFKA="kafka_2.12-2.8.1"
+KAFKA_DIR="/home/ec2-user/kafka"
 
 yum update -y
 yum -y install java-11
-mkdir ~/kafka
-cd ~/kafka
+mkdir $KAFKA_DIR
+cd $KAFKA_DIR
 wget https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
 tar xzf $KAFKA.tgz
 cd $KAFKA/lib
