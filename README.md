@@ -2,14 +2,69 @@
 
 This repository hosts a terraform module for the creation of a base network environment in AWS, on which MSK (Kafka) can be installed.
 
+## Prerequisites
+
+### Terraform and AWS CLI configuration
+In order to use this module, terraform needs to be properly installed and configured.  Whilst this is out of the scope of this README file, an example `provider.tf` file is shown below.  The [official terraform documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) explains how to get terraform up and running on a local machine.  Alternatively, [Terraform Cloud](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started) is another option.
+
+### Create a provider.tf file
+~~~
+//Configure the terraform backend (S3) and aws provider
+terraform {
+  backend "s3" {
+    bucket  = "<s3-bucketname goes here>"
+    key     = "terraform.tfstate"
+    region  = "us-east-1"
+  }
+
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
+//Specify which AWS region and profile should be used by default
+provider "aws" {
+  region  = "us-east-1"
+}
+~~~
+
+### Configure an SSH Key
+#### Create an SSH Keypair
+Create a new ssh-key for use with this environment, using the *ssh-keygen* command:
+```
+ssh-keygen -N "" -f my-new-ssh-key
+```
+> The private key should never be shared, and its file location should be the value for `private_key_path` in the main.tf file example shown below.  The *contents* of the public key should be given as the value for `public_key_path`
+
+#### Ensure the correct permissions on the new keypair
+chmod 400 my-new-ssh-key
+chmod 644 my-new-ssh-key.pub
+
+#### Ensure ssh-agent is running
+```
+eval $(ssh-agent)
+```
+
+#### Add your new key to the ssh-agent 
+```
+ssh-add my-new-ssh-key
+```
+
+#### Check that your new key has been loaded into the ssh-agent
+```
+ssh-add -l
+```
+
 ## Usage
 The terraform code hosted in this repository can be easily used by creating a parent module on your local machine, in a main.tf file as shown below.
 (More information about terraform modules can be found on [this](https://developer.hashicorp.com/terraform/language/modules) page)
 
-The command [`ssh-keygen`](https://linux.die.net/man/1/ssh-keygen) can be used to generate a keypair.  The private key should not be shared, and its file location should be the value for `private_key_path`.  The contents of the public key should be given as the value for `public_key_path`
-
 Note the `source` parameter can be used to *either* point directly to this repository or a local copy of the terraform module.
 
+
+### Create a main.tf file 
 ~~~
 #main.tf file for deploying msk-framework-terraform
 module "msk-framework-environment" {
@@ -57,31 +112,4 @@ Users are reminded that the deployment of cloud resources will incur costs.
  - An Internet Gateway
  - A NAT Gateway
  - Routes, Route Tables & Associations
-
-## Prerequisites
-
-### Terraform and AWS CLI configuration
-In order to use this module, terraform needs to be properly installed and configured.  Whilst this is out of the scope of this README file, an example `provider.tf` file is shown below.  The [official terraform documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) explains how to get terraform up and running on a local machine.  Alternatively, [Terraform Cloud](https://developer.hashicorp.com/terraform/tutorials/cloud-get-started) is another option.
-
-~~~
-//Configure the terraform backend (S3) and aws provider
-terraform {
-  backend "s3" {
-    bucket  = "<s3-bucketname goes here>"
-    key     = "terraform.tfstate"
-    region  = "us-east-1"
-  }
-
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
-}
-
-//Specify which AWS region and profile should be used by default
-provider "aws" {
-  region  = "us-east-1"
-}
-~~~
 
