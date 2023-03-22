@@ -98,10 +98,14 @@ module "msk-framework-environment" {
 output "bastion_ssh_command" {
   value = module.msk-framework-environment.bastion_ssh_command
 }
+
+output "msk_test_ssh_command" {
+  value = module.msk-framework-environment.msk_test_ssh_command
+}
 ~~~
 
-## Verify Terraform Code
-Once the main.tf file has been properly created, the terrform configuration can be validated:
+## Validate Terraform Code
+Once the main.tf file has been properly created, the terraform configuration can be validated:
 ```
 terraform validate
 ```
@@ -116,14 +120,17 @@ terraform apply -auto-approve
 ```
 
 ## Connecting to the bastion
-Once the ```terraform apply``` has completed. The bastion can be connected to, using the command which is shown as part of the terraform output.  For example:
+Once the ```terraform apply``` has completed. The bastion can be connected to by using the first command which is shown as part of the terraform output.  For example:
 
 ```
 ssh -A -o StrictHostKeyChecking=no ec2-user@13.40.122.45
 ```
 
-Once connected to the bastion instance, a further connection can be made (from the bastion instance) onto the msk-test instance which resides in the first private subnet (and only has a private IP address)
+Once connected to the bastion instance, a further connection can be made (from the bastion instance) onto the msk-test instance which resides in the first private subnet (and only has a private IP address). This can be done with the second command which is shown as part of the terraform output.  For example:
 
+```
+ssh -A -o StrictHostKeyChecking=no ec2-user@10.10.10.10
+```
 
 ## AWS Resources
 Assuming that defaults were used, the following resources are created by the terraform module:
