@@ -38,7 +38,7 @@ EOF
 # Create Script "~/kakfa/create-topic.sh"
 #
 
-cat << EOF > $USER_HOME_DIR/kakfa/create-topic.sh
+cat << EOF > $USER_KAFKA_DIR/create-topic.sh
 
 ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
 
@@ -55,4 +55,4 @@ bin/kafka-topics.sh \
 --bootstrap-server $ENDPOINT1,$ENDPOINT2,$ENDPOINT3
 EOF
 
-chmod 755 $USER_HOME_DIR/kakfa/create-topic.sh
+chmod 755 $USER_KAFKA_DIR/create-topic.sh
