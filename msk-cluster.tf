@@ -32,4 +32,5 @@ resource "aws_msk_cluster" "msk_cluster" {
 
 data "aws_msk_cluster" "the_msk_cluster" {
   cluster_name = "${var.env_prefix}-msk-cluster"
+  depends_on = [aws_msk_cluster.msk_cluster]
 }
