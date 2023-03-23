@@ -32,9 +32,12 @@ resource "aws_security_group" "msk_private_sg" {
     from_port = 0
     to_port   = 0
     protocol  = "-1"
+    cidr_blocks = ["${var.vpc_base_cidr}"]
+    
     security_groups = [
       aws_security_group.msk_public_sg.id
     ]
+    
   }
 
   egress {

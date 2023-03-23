@@ -2,22 +2,53 @@
 
 sleep 10
 
+#
+# Install Kakfa libraries
+#
+
 KAFKA="kafka_2.12-2.8.1"
-KAFKA_DIR="/home/ec2-user/kafka"
+KAFKA_DIR="/home/ec2-user/kafka/$KAFKA"
+
+mkdir $KAFKA_DIR
+cd $KAFKA_DIR
 
 yum update -y
 yum -y install java-11
-mkdir $KAFKA_DIR
-cd $KAFKA_DIR
+
+
 wget https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
 tar xzf $KAFKA.tgz
 cd $KAFKA/libs
 wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
 
-MSK_CONFIG="kafka_2.12-2.8.1/config/client.properties"
-touch $MSK_CONFIG
-echo "security.protocol=SASL_SSL" >> $MSK_CONFIG
-echo "sasl.mechanism=AWS_MSK_IAM" >> $MSK_CONFIG
-echo "sasl.jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;" >> $MSK_CONFIG
-echo "sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler" >> $MSK_CONFIG
+cd $KAFKA_DIR
 
+#
+# Create client.properties file
+#
+
+cat << EOF > $MSK_CONFIG
+security.protocol=SASL_SSL
+sasl.mechanism=AWS_MSK_IAM
+sasl.jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;
+sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbackHandler
+EOF
+
+#
+# Create Kakfa Topic 'mytopic'
+#
+
+
+ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
+
+ENDPOINT1="b-1.$ENDPOINT"
+ENDPOINT2="b-2.$ENDPOINT"
+ENDPOINT3="b-3.$ENDPOINT"
+
+bin/kafka-topics.sh \
+--create \
+--partitions 1 \
+--topic my-topic \
+--replication-factor 2 \
+--command-config config/client.properties \
+--bootstrap-server $ENDPOINT1,$ENDPOINT2,$ENDPOINT3

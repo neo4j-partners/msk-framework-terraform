@@ -41,7 +41,6 @@ resource "aws_instance" "msk_client_instance" {
   }
 }
 
-
 data "aws_ami" "latest_amazon" {
   most_recent = true
 
