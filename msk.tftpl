@@ -1,8 +1,7 @@
 #!/bin/bash -x
 
-sleep 45
+sleep 5
 
-yum update -y
 yum -y install java-11
 
 #
@@ -38,10 +37,12 @@ EOF
 # Create Script "~/kakfa/create-topic.sh"
 #
 
+cd $USER_KAFKA_DIR/
+
 cat << EOF > $USER_KAFKA_DIR/create-topic.sh
+#!/bin/bash 
 
 ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
-
 ENDPOINT1="b-1.$ENDPOINT"
 ENDPOINT2="b-2.$ENDPOINT"
 ENDPOINT3="b-3.$ENDPOINT"
