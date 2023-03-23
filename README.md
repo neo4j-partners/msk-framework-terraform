@@ -1,6 +1,26 @@
 # msk-framework-terraform
 
-This repository hosts a terraform module for the creation of a base network environment in AWS, on which MSK (Kafka) can be installed.
+This repository hosts a terraform module which performs the following tasks (when invoked as a child module):
+
+1 - Creates of a base network environment in AWS, consisting of:
+ - 1 VPC, with a CIDR Range of 10.0.0.0/16
+ - 4 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
+   - ```10.0.1.0/24  [Private]```
+   - ```10.0.2.0/24  [Private]```
+   - ```10.0.3.0/24  [Private]```
+   - ```10.0.10.0/24 [Public]```
+ - An Internet Gateway
+ - A NAT Gateway
+ - Routes, Route Tables & Associations
+
+2 - Installs an MSK (Kafka) Cluster on AWS
+
+3 - Installs 2 EC2 instances
+ - A msk-client EC2 instance, which has the following things pre-installed (via a user-data script):
+   - The kafka client application and libraries
+   - A script called, ```create-topic.sh``` which created a topic on the MSK (kafka) cluster
+   - A client.properties file
+ - A bastion EC2 instance, which can be used as a 'jump server' to connect from the internet to the msk-client EC2 instance
 
 ## Prerequisites
 
@@ -135,18 +155,8 @@ ssh -A -o StrictHostKeyChecking=no ec2-user@10.0.11.22
 ```
 
 ## AWS Resources
-Assuming that defaults were used, the following resources are created by the terraform module:
+Users are reminded that the deployment of cloud resources will incur costs.  
 
-Users are reminded that the deployment of cloud resources will incur costs.
 
- - 1 VPC, with a CIDR Range of 10.0.0.0/16
- - 4 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
-   - ```10.0.1.0/24  [Private]```
-   - ```10.0.2.0/24  [Private]```
-   - ```10.0.3.0/24  [Private]```
-   - ```10.0.10.0/24 [Public]```
- - An Internet Gateway
- - A NAT Gateway
- - Routes, Route Tables & Associations
 
 > If you tear down the environment and start again, you may need to delete and re-add your ssh-key into the ssh-agent.  The command ```ssh-add -D``` can be used to delete all entries from ssh-agent.
