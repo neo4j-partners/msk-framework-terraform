@@ -10,12 +10,14 @@ yum -y install java-11
 #
 
 KAFKA="kafka_2.12-2.8.1"
-USER_HOME_DIR="/home/ec2-user/"
-KAFKA_DIR="/home/ec2-user/kafka/$KAFKA"
-MSK_CONFIG="$KAFKA_DIR/client.properties"
+USER_HOME_DIR="/home/ec2-user"
+USER_KAFKA_DIR="$USER_HOME_DIR/kafka"
+KAFKA_DIR="$USER_HOME_DIR/kafka/$KAFKA"
+KAFKA_CONFIG_DIR="$KAFKA_DIR/config"
 
-cd $USER_HOME_DIR
-wget -q https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
+mkdir $USER_KAFKA_DIR
+cd $USER_KAFKA_DIR
+aws s3 cp s3://neo4j-product-public/$KAFKA.tgz .
 tar xzf $KAFKA.tgz
 cd $KAFKA/libs
 wget -q https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
@@ -24,8 +26,8 @@ wget -q https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk
 # Create client.properties file
 #
 
-cd $KAFKA_DIR
-cat << EOF > $MSK_CONFIG
+cd $KAFKA_CONFIG_DIR
+cat << EOF > client.properties
 security.protocol=SASL_SSL
 sasl.mechanism=AWS_MSK_IAM
 sasl.jaas.config=software.amazon.msk.auth.iam.IAMLoginModule required;
