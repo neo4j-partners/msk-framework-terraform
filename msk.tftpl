@@ -12,12 +12,13 @@ yum -y install java-11
 KAFKA="kafka_2.12-2.8.1"
 USER_HOME_DIR="/home/ec2-user/"
 KAFKA_DIR="/home/ec2-user/kafka/$KAFKA"
+$MSK_CONFIG="$KAFKA_DIR/client.properties"
 
 cd $USER_HOME_DIR
-wget https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
+wget -q https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
 tar xzf $KAFKA.tgz
 cd $KAFKA/libs
-wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
+wget -q https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
 
 #
 # Create client.properties file
