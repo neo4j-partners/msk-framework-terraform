@@ -2,31 +2,28 @@
 
 sleep 10
 
+yum update -y
+yum -y install java-11
+
 #
 # Install Kakfa libraries
 #
 
 KAFKA="kafka_2.12-2.8.1"
+USER_HOME_DIR="/home/ec2-user/"
 KAFKA_DIR="/home/ec2-user/kafka/$KAFKA"
 
-mkdir $KAFKA_DIR
-cd $KAFKA_DIR
-
-yum update -y
-yum -y install java-11
-
-
+cd $USER_HOME_DIR
 wget https://archive.apache.org/dist/kafka/2.8.1/$KAFKA.tgz
 tar xzf $KAFKA.tgz
 cd $KAFKA/libs
 wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
 
-cd $KAFKA_DIR
-
 #
 # Create client.properties file
 #
 
+cd $KAFKA_DIR
 cat << EOF > $MSK_CONFIG
 security.protocol=SASL_SSL
 sasl.mechanism=AWS_MSK_IAM
@@ -35,9 +32,10 @@ sasl.client.callback.handler.class=software.amazon.msk.auth.iam.IAMClientCallbac
 EOF
 
 #
-# Create Kakfa Topic 'mytopic'
+# Create Script "~/kakfa/create-topic.sh"
 #
 
+cat << EOF > $USER_HOME_DIR/kakfa/create-topic.sh
 
 ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
 
@@ -52,3 +50,4 @@ bin/kafka-topics.sh \
 --replication-factor 2 \
 --command-config config/client.properties \
 --bootstrap-server $ENDPOINT1,$ENDPOINT2,$ENDPOINT3
+EOF
