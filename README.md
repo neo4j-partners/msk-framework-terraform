@@ -1,10 +1,12 @@
 # msk-framework-terraform
 
+## Purpose
+
 This repository hosts a terraform module which performs the following tasks (when invoked as a child module):
 
 1 - Creates of a base network environment in AWS, consisting of:
- - 1 VPC, with a CIDR Range of 10.0.0.0/16
- - 4 Subnets, distributed evenly across 3 Availability zones, with the following CIDR Ranges:
+ - 1 VPC, with a configurable CIDR Range, for example 10.0.0.0/16
+ - 4 Subnets, distributed evenly across 3 Availability zones, with the following (example) CIDR Ranges:
    - ```10.0.1.0/24  [Private]```
    - ```10.0.2.0/24  [Private]```
    - ```10.0.3.0/24  [Private]```
@@ -15,12 +17,12 @@ This repository hosts a terraform module which performs the following tasks (whe
 
 2 - Installs an MSK (Kafka) Cluster on AWS
 
-3 - Installs 2 EC2 instances
- - A msk-client EC2 instance, which has the following things pre-installed (via a user-data script):
+3 - Installs 2 EC2 instances:
+ - An msk-client EC2 instance, which has the following things pre-installed (via a user-data script):
    - The kafka client application and libraries
-   - A script called, ```create-topic.sh``` which created a topic on the MSK (kafka) cluster
+   - A script called, ```create-topic.sh``` which creates a topic on the MSK (kafka) cluster
    - A client.properties file
- - A bastion EC2 instance, which can be used as a 'jump server' to connect from the internet to the msk-client EC2 instance
+ - A bastion EC2 instance, which can be used as a 'jump server' to connect from the internet to the msk-client EC2 instance (which resides in a private subnet)
 
 ## Prerequisites
 
@@ -93,25 +95,12 @@ module "msk-framework-environment" {
   source         = "github.com/edrandall-dev/msk-framework-terraform"
   //source       = "../msk-framework-terraform"
 
-  //Required values (no defaults are provided)
   public_key_value = "ssh-rsa AAAAB3NzaC1A.....b+oTz7tb0WF2aiOPp0="
   private_key_path = "~/.ssh/my-ssh-key"
-
-  //The following Optional values can be omitted if the defaults are satisfactory.
-
-  //Default is "t3.medium"
   bastion_instance_type = "t3.micro"
-
-  //Default is "10.0.0.0/16"
   vpc_base_cidr = "10.0.0.0/16"
-
-  //Default is "0.0.0.0/0"
   ssh_source_cidr   = "0.0.0.0/0"
-
-  //Default is "msk-tf-cloud"
   env_prefix = "msk-tf-cloud"
-
-  //Default is "us-east-1"
   target_region = "us-east-1"
 }
 
@@ -122,8 +111,6 @@ output "bastion_ssh_command" {
 output "msk_test_ssh_command" {
   value = module.msk-framework-environment.msk_test_ssh_command
 }
-
-
 ~~~
 
 ## Validate Terraform Code
@@ -154,9 +141,13 @@ Once connected to the bastion instance, a further connection can be made (from t
 ssh -A -o StrictHostKeyChecking=no ec2-user@10.0.11.22
 ```
 
+## Running the create-topic.sh script
+
+The ```create-topic.sh``` script is resides in the ec2-users home directory, in a subdirectory called kafka.  The script is pre-populated with the correct broker endpoints.  When executed, it will create a topic on the MSK (Kafka) cluster called ```my-topic```.
+
+
 ## AWS Resources
-Users are reminded that the deployment of cloud resources will incur costs.  
-
-
+ - Users are reminded that the deployment of cloud resources will incur costs.  
+ - The installation process will take upwards of 20 minutes.
 
 > If you tear down the environment and start again, you may need to delete and re-add your ssh-key into the ssh-agent.  The command ```ssh-add -D``` can be used to delete all entries from ssh-agent.
