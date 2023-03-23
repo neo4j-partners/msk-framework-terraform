@@ -148,6 +148,6 @@ The ```create-topic.sh``` script is resides in the ec2-users home directory, in 
 
 ## AWS Resources
  - Users are reminded that the deployment of cloud resources will incur costs.  
- - The creation of MSK (kafka) clusters takes a long time.  The installation process will likely take upwards of 20 minutes.
+ - The creation of MSK (kafka) clusters takes a long time.  The installation process will likely take upwards of 25 minutes.
 
 > If you tear down the environment and start again, you may need to delete and re-add your ssh-key into the ssh-agent.  The command ```ssh-add -D``` can be used to delete all entries from ssh-agent.
