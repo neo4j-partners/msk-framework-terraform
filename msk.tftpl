@@ -8,7 +8,6 @@ yum -y install java-11
 # Install Kakfa libraries
 #
 
-
 BROKERS=${msk_brokers}
 KAFKA="kafka_2.12-2.8.1"
 USER_HOME_DIR="/home/ec2-user"
@@ -41,20 +40,10 @@ EOF
 
 cd $USER_KAFKA_DIR/
 
-ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
-ENDPOINT1="b-1.$ENDPOINT"
-ENDPOINT2="b-2.$ENDPOINT"
-ENDPOINT3="b-3.$ENDPOINT"
-
-cat << EOF > $USER_KAFKA_DIR/create-topic.sh
+cat << EOT > $USER_KAFKA_DIR/create-topic.sh
 #!/bin/bash 
 
 TOPIC="my-topic"
-
-ENDPOINT="$ENDPOINT"
-ENDPOINT1="b-1.\$ENDPOINT"
-ENDPOINT2="b-2.\$ENDPOINT"
-ENDPOINT3="b-3.\$ENDPOINT"
 
 $KAFKA_DIR/bin/kafka-topics.sh \
 --create \
@@ -63,7 +52,8 @@ $KAFKA_DIR/bin/kafka-topics.sh \
 --replication-factor 2 \
 --command-config $KAFKA_CONFIG_DIR/client.properties \
 --bootstrap-server $BROKERS \
-EOF
+EOT
+
 
 chown -R ec2-user:ec2-user $USER_HOME_DIR
 chmod 755 $USER_KAFKA_DIR/create-topic.sh
