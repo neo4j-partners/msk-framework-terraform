@@ -39,21 +39,28 @@ EOF
 
 cd $USER_KAFKA_DIR/
 
-cat << EOF > $USER_KAFKA_DIR/create-topic.sh
-#!/bin/bash 
-
 ENDPOINT="000mskenvmskcluster.9pyi8w.c2.kafka.eu-west-2.amazonaws.com:9098"
 ENDPOINT1="b-1.$ENDPOINT"
 ENDPOINT2="b-2.$ENDPOINT"
 ENDPOINT3="b-3.$ENDPOINT"
 
-bin/kafka-topics.sh \
+cat << EOF > $USER_KAFKA_DIR/create-topic.sh
+#!/bin/bash 
+
+TOPIC="my-topic"
+
+ENDPOINT="$ENDPOINT"
+ENDPOINT1="b-1.\$ENDPOINT"
+ENDPOINT2="b-2.\$ENDPOINT"
+ENDPOINT3="b-3.\$ENDPOINT"
+
+$KAFKA_DIR/bin/kafka-topics.sh \
 --create \
 --partitions 1 \
 --topic my-topic \
 --replication-factor 2 \
---command-config config/client.properties \
---bootstrap-server $ENDPOINT1,$ENDPOINT2,$ENDPOINT3
+--command-config $KAFKA_CONFIG_DIR/client.properties \
+--bootstrap-server \$ENDPOINT1,\$ENDPOINT2,\$ENDPOINT3
 EOF
 
 chmod 755 $USER_KAFKA_DIR/create-topic.sh
