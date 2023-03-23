@@ -4,7 +4,7 @@
 
 This repository hosts a terraform module which performs the following tasks (when invoked as a child module):
 
-1 - Creates of a base network environment in AWS, consisting of:
+1) Creates of a base network environment in AWS, consisting of:
  - 1 VPC, with a configurable CIDR Range, for example 10.0.0.0/16
  - 4 Subnets, distributed evenly across 3 Availability zones, with the following (example) CIDR Ranges:
    - ```10.0.1.0/24  [Private]```
@@ -15,14 +15,16 @@ This repository hosts a terraform module which performs the following tasks (whe
  - A NAT Gateway
  - Routes, Route Tables & Associations
 
-2 - Installs an MSK (Kafka) Cluster on AWS
+2) Installs an MSK (Kafka) Cluster on AWS
 
-3 - Installs 2 EC2 instances:
+3) Installs 2 EC2 instances:
  - An msk-client EC2 instance, which has the following things pre-installed (via a user-data script):
    - The kafka client application and libraries
    - A script called, ```create-topic.sh``` which creates a topic on the MSK (kafka) cluster
    - A client.properties file
  - A bastion EC2 instance, which can be used as a 'jump server' to connect from the internet to the msk-client EC2 instance (which resides in a private subnet)
+
+4) Creates the necessary IAM roles & policies
 
 ## Prerequisites
 
