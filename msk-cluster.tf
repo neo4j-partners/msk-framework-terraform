@@ -29,3 +29,7 @@ resource "aws_msk_cluster" "msk_cluster" {
     "Terraform" = true
   }
 }
+
+data "aws_msk_cluster" "the_msk_cluster" {
+  cluster_name = "${var.env_prefix}-msk-cluster"
+}

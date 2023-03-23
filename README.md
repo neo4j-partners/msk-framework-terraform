@@ -102,6 +102,8 @@ output "bastion_ssh_command" {
 output "msk_test_ssh_command" {
   value = module.msk-framework-environment.msk_test_ssh_command
 }
+
+
 ~~~
 
 ## Validate Terraform Code

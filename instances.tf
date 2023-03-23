@@ -31,7 +31,7 @@ resource "aws_instance" "msk_client_instance" {
   user_data = templatefile(
     "${path.module}/msk.tftpl",
     {
-
+      msk_brokers = data.aws_msk_cluster.the_msk_cluster.bootstrap_brokers_sasl_iam
     }
   )
 
