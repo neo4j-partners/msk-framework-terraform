@@ -145,8 +145,17 @@ ssh -A -o StrictHostKeyChecking=no ec2-user@10.0.11.22
 
 ## Running the create-topic.sh script
 
-The ```create-topic.sh``` script is resides in the ec2-users home directory, in a subdirectory called kafka.  The script is pre-populated with the correct broker endpoints.  When executed, it will create a topic on the MSK (Kafka) cluster called ```my-topic```.
+The ```create-topic.sh``` script resides in the ec2-users home directory, in a subdirectory called kafka (along with the other client tools).  The script is pre-populated with the correct broker endpoints.  If run without arguments, it will create a topic on the MSK (Kafka) cluster called ```my-topic```.  However, it can also be run with a single argument to specify a topic name other than "my-topic", for example:
 
+```
+#creates a topic called my-topic
+./create-topic.sh
+```
+
+```
+#creates a topic called your-topic
+./create-topic.sh your-topic
+```
 
 ## AWS Resources
  - Users are reminded that the deployment of cloud resources will incur costs.  
