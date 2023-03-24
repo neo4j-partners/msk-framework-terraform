@@ -45,7 +45,7 @@ cat << EOT > $USER_KAFKA_DIR/create-topic.sh
 
 TOPIC=$1
 
-if [ -z $TOPIC ]; then
+if [ -z $1 ]; then
   TOPIC="my-topic"
 fi
 
