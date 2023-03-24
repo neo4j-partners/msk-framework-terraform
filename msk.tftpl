@@ -17,7 +17,7 @@ KAFKA_CONFIG_DIR="$KAFKA_DIR/config"
 
 mkdir $USER_KAFKA_DIR
 cd $USER_KAFKA_DIR
-wget https://neo4j-product-public.s3.eu-west-2.amazonaws.com/$KAFKA.tgz
+wget -q https://neo4j-product-public.s3.eu-west-2.amazonaws.com/$KAFKA.tgz
 tar xzf $KAFKA.tgz
 cd $KAFKA/libs
 wget -q https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.6/aws-msk-iam-auth-1.1.6-all.jar
