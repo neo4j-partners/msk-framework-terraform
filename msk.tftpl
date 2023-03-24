@@ -43,7 +43,11 @@ cd $USER_KAFKA_DIR/
 cat << EOT > $USER_KAFKA_DIR/create-topic.sh
 #!/bin/bash 
 
-TOPIC="my-topic"
+TOPIC=$1
+
+if [ -z $TOPIC ]; then
+  TOPIC="my-topic"
+fi
 
 $KAFKA_DIR/bin/kafka-topics.sh \
 --create \
